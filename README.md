@@ -32,6 +32,7 @@ Here is variant that prints "hello world" with no error checking:
 package main
 
 import (
+	"image/color"
 	"picocalc/ili948x"
 
 	"tinygo.org/x/tinyfont"
@@ -46,7 +47,7 @@ func main() {
 		&shnm.Shnmk12,
 		130,
 		100,
-		"hellow world",
+		"hello world",
 		color.RGBA{255, 255, 255, 255})
 	for {
 	}
@@ -61,13 +62,8 @@ The PicoCalc must be "on" for the Keyboard to function.
 package main
 
 import (
-	"image/color"
 	"picocalc/i2ckbd"
-	"picocalc/ili948x"
 	"time"
-
-	"tinygo.org/x/tinyfont"
-	"tinygo.org/x/tinyfont/shnm"
 )
 
 func main() {

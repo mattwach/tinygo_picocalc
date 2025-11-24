@@ -126,18 +126,10 @@ the PicoCalc is powered on with the micro USB attached, it will feed 5V to the
 
 ## Serial Communications
 
-As said above, you have to use the micro USB to program the PI Pico but should
-not use it while the PicoCalc is powered on, due to the 5V charging hardware
-issue.  When you compile with `-serial=uart`:
-
-    tinygo flash -target=pico -serial=uart
-
-The USB-C port is now selected for serial communications.
-
-Note that the PicoCalc hardware tries to change the 18650 batteries when you
-use the USB-C port. It will not overcharge them but can still pull a fair
-amount of current. Running with the USB-C port and no batteries will avoid
-charging the PicoCalc.
+When using the USB-C port as a serial monitor (via `-serial=uart`), the
+PicoCalc hardware tries to charge any installed 18650 batteries. It will not
+overcharge them in this case but can still pull a fair amount of current.
+Running with the USB-C port and no batteries will avoid charging the PicoCalc.
 
 ## Troubleshooting / Debugging
 

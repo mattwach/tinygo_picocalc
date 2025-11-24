@@ -17,30 +17,30 @@ var (
 )
 
 var font = &shnm.Shnmk12
-var disp *ili948x.Ili948x
+var lcd *ili948x.Ili948x
 
 func main() {
-	disp = ili948x.InitDisplay()
-	tinyfont.WriteLine(disp, font, 130, 100, "Press Any Key", white)
-	var kdb i2ckbd.I2CKbd
-	if err := kdb.Init(); err != nil {
+	lcd = ili948x.InitDisplay()
+	tinyfont.WriteLine(lcd, font, 130, 100, "Press Any Key", white)
+	var keyboard i2ckbd.I2CKbd
+	if err := keyboard.Init(); err != nil {
 		showError(err)
 	}
 	for {
-		k, err := kdb.GetChar()
+		k, err := keyboard.GetChar()
 		if err != nil {
 			showError(err)
 		}
 		if k != 0 {
-			disp.FillRectangle(140, 140, 40, 40, ili948x.BLACK)
-			tinyfont.DrawChar(disp, font, 160, 160, rune(k), green)
+			lcd.FillRectangle(140, 140, 40, 40, ili948x.BLACK)
+			tinyfont.DrawChar(lcd, font, 160, 160, rune(k), green)
 		}
 		time.Sleep(20 * time.Millisecond)
 	}
 }
 
 func showError(err error) {
-	tinyfont.WriteLine(disp, font, 0, 64, err.Error(), red)
+	tinyfont.WriteLine(lcd, font, 0, 64, err.Error(), red)
 	for {
 	}
 }

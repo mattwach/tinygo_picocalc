@@ -14,7 +14,7 @@ check out [main.go](main.go) to see the code.
   with a pico on a breadboard.  The flash command is `tinygo flash -target=pico` (or `-target=pico2`)
 - If you are new to Go or want a refresher, [Tour of Go](https://go.dev/tour/) can help.
 
-# Flash
+# Uploading the Code (Flash)
 
 The Pico that shipped with your PicoCalc likely has a fancy bootloader that can
 run programs from an SD card. I'm not to that level with TinyGo and instead use
@@ -104,23 +104,25 @@ Now the Pico has a reset button. You can press reset while holding boot to
 go into programming mode. If you don't want to do this mod, you can instead
 do the classic "hold boot while plugging the cable" method.
 
-For the next step, I simply drilled holes in the PicoCalc case the button(s)
-are.
+For the next step, I simply drilled holes in the PicoCalc case where the
+button(s) are.
 
 ![picocalc](img/hacked_picocalc.jpg)
 
 Now to program, I do this:
 
-1. Turn the picocalc upside down.  Do not turn it on (see below).
+1. Turn the picocalc upside down with the batteries removed.
 2. Plug the micro USB programming cable between the PC and Pico
 3. Using two tools (chopsticks, hex wrench, etc), hold down the boot button and press reset
 4. Your Pico should mount as a USB drive on the PC.
 5. Run `tingo flash -target=pico` (or whatever programming command you need)
-6. Unplug the micro USB before turning on the pico.
+6. Unplug the micro USB.
+7. You can power the PicoCalc using either 18650 batteries or the USB-C port.
 
-The last step is important.  My PicoCalc hardware revision has a bug where if
-the PicoCalc is on with the micro USB attached, it will feed 5V to the 18650
-batteries - this can overcharge these batteries and is best avoided.
+Why no batteries? PicoCalc hardware currently (11/2025) has a flaw where, if
+the PicoCalc is powered on with the micro USB attached, it will feed 5V to the
+18650 batteries- this can overcharge these batteries which you want to avoid
+(Google "18650 overvoltage").
 
 ## Serial Communications
 

@@ -5,10 +5,30 @@ writes a string to the LCD, then displays the characters you type.  It
 intentionally uses as little code as possible so that it's easy to use as
 a starting point for experimentation.
 
-check out [main.go](main.go) to see the code.  Here is an even less complex variant
-that prints "hello world" with no error checking:
+check out [main.go](main.go) to see the code.
 
+# Prerequisites
+
+- Install TinyGo using their [official instructions](https://tinygo.org/getting-started/install/).
+- Optional (recommended): Do the [blinking light tutorial](https://tinygo.org/tour/blink/onboard/)
+  with a pico on a breadboard.  The flash command is `tinygo flash -target=pico` (or `-target=pico2`)
+- If you are new to Go or want a refresher, [Tour of Go](https://go.dev/tour/) can help.
+
+# Flash
+
+```bash
+tinygo flash -target=pico
 ```
+
+Use `-target=pico2` if you are using a Pico 2.  If it works, you'll see this:
+
+![picocalc](img/picocalc.jpg) 
+
+# More Examples
+
+Here is variant that prints "hello world" with no error checking:
+
+```golang
 package main
 
 import (
@@ -33,9 +53,11 @@ func main() {
 }
 ```
 
-and here is an minimal version that echos PicoCalc keystrokes to the serial console:
+and here is an minimal version that echos PicoCalc keystrokes to the serial console.
+Compile it with `-serial=uart`, then use 'tinygo monitor' to view the output (via USB-C).
+The PicoCalc must be "on" for the Keyboard to function.
 
-```
+```golang
 package main
 
 import (
@@ -62,20 +84,6 @@ func main() {
 
 ```
 
-# Prerequisites
-
-- Install TinyGo using their [official instructions](https://tinygo.org/getting-started/install/).
-- Optional (recommended): Do the [blinking light tutorial](https://tinygo.org/tour/blink/onboard/)
-  with a pico on a breadboard.  The flash command is `tinygo flash -target=pico` (or `-target=pico2`)
-- If you are new to Go or want a refresher, [Tour of Go](https://go.dev/tour/) can help.
-
-# Flash
-
-    tinygo flash -target=pico
-
-Use `-target=pico2` if you are using a Pico 2.  If it works, you'll see this:
-
-![picocalc](img/picocalc.jpg) 
 
 # More Tips
 
@@ -159,7 +167,7 @@ files that will compile differently on PC and PicoCalc.  For example,
 say you want to print to the screen or LCD.  You could make a PC version,
 `printpc.go`:
 
-```
+```golang
 //go:build !pico && !pico2
 
 package console
@@ -171,7 +179,7 @@ func Print(msg string) {
 
 and a picocalc version in the same directory, `printpicocalc.go`:
 
-```
+```golang
 //go:build pico && pico2
 
 package console

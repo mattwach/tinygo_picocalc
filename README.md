@@ -16,8 +16,13 @@ check out [main.go](main.go) to see the code.
 
 # Flash
 
+The Pico that shipped with your PicoCalc likely has a fancy bootloader that can
+run programs from an SD card. I'm not to that level with TinyGo and instead use
+the "classic" flash process.  You might want to use a dedicated Pico for these
+experiments to keep your original Pico unchanged.
+
 ```bash
-tinygo flash -target=pico
+tinygo flash -target=pico -serial=uart
 ```
 
 Use `-target=pico2` if you are using a Pico 2.  If it works, you'll see this:
@@ -54,9 +59,10 @@ func main() {
 }
 ```
 
-and here is an minimal version that echos PicoCalc keystrokes to the serial console.
-Compile it with `-serial=uart`, then use 'tinygo monitor' to view the output (via USB-C).
-The PicoCalc must be "on" for the Keyboard to function.
+and here is an minimal version that echos PicoCalc keystrokes to the serial
+console.  Compile it with `tinygo flash -target=pico -serial=uart` (or
+`pico2`), then use `tinygo monitor` to view the output (via USB-C).  The
+PicoCalc must be powered on for the Keyboard to function.
 
 ```golang
 package main
@@ -71,7 +77,7 @@ func main() {
 	_ = keyboard.Init()
 	for {
 		k, _ := keyboard.GetChar()
-		if k != 0 {
+		if (k >= 32) && (k <= 127) {
 			print(string(rune(k)))
 		}
 		time.Sleep(20 * time.Millisecond)
@@ -85,17 +91,17 @@ func main() {
 
 ## Flashing New Code
 
-Flashing the Pico inside the PicoCalc was not made as easy as it could be.
-Some people created some advanced solutions with 3D printing, etc. Here I
-present a simple hack.
+Flashing a Pico installed in a PicoCalc was not made as convenient as it could
+have been.  Some people created some advanced solutions with 3D printing, etc.
+Here I present a simple hack.
 
 First, I superglued a SMD button to the Pico and soldered a jumper wire to
 the reset pin, like this:
 
 ![picocalc](img/hacked_pico.jpg)
 
-Now the Pico has a reset button like it arguably always should have and you
-can press reset while holding boot to go into programming mode.
+Now the Pico has a reset button. You can press reset while holding boot to
+go into programming mode.
 
 For the next step, I simply drilled holes in the PicoCalc case where the buttons
 are.

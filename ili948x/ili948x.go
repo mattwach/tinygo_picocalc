@@ -64,8 +64,6 @@ type Ili948x struct {
 	cs     machine.Pin // spi chip select
 	dc     machine.Pin // tft data / command
 	rst    machine.Pin // tft reset
-	width  int16       // tft pixel width
-	height int16       // tft pixel height
 	x0, x1 int16       // current address window for
 	y0, y1 int16       //  CMD_PASET and CMD_CASET
 }
@@ -130,7 +128,7 @@ func NewIli9488(trans *spiTransport, cs, dc, rst machine.Pin) *Ili948x {
 // For compatibility with https://github.com/tinygo-org/drivers/blob/release/displayer.go
 // Size returns the current size of the display.
 func (disp *Ili948x) Size() (int16, int16) {
-	return disp.width, disp.height
+	return TFT_WIDTH, TFT_HEIGHT
 }
 
 // For compatibility with https://github.com/tinygo-org/drivers/blob/release/displayer.go
@@ -195,7 +193,7 @@ func (disp *Ili948x) DrawVLine(x, y0, y1 int16, c RGB565) {
 
 // FillScreen fills the screen with the specified color.
 func (disp *Ili948x) FillScreen(c RGB565) {
-	disp.FillRectangle(0, 0, disp.height, disp.width, c)
+	disp.FillRectangle(0, 0, TFT_WIDTH, TFT_HEIGHT, c)
 }
 
 // FillRectangle fills a rectangle at given coordinates and dimensions with the specified color.

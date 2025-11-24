@@ -21,7 +21,7 @@ var disp *ili948x.Ili948x
 
 func main() {
 	disp = ili948x.InitDisplay()
-	tinyfont.WriteLine(disp, font, 3, 32, "Press Any Key", white)
+	tinyfont.WriteLine(disp, font, 130, 100, "Press Any Key", white)
 	var kdb i2ckbd.I2CKbd
 	if err := kdb.Init(); err != nil {
 		showError(err)

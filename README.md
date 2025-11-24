@@ -59,10 +59,10 @@ func main() {
 }
 ```
 
-and here is an minimal version that echos PicoCalc keystrokes to the serial
+Here is an minimal version that echos PicoCalc keystrokes to the serial
 console.  Compile it with `tinygo flash -target=pico -serial=uart` (or
 `pico2`), then use `tinygo monitor` to view the output (via USB-C).  The
-PicoCalc must be powered on for the Keyboard to function.
+PicoCalc must be powered on for its keyboard to function.
 
 ```golang
 package main
@@ -91,9 +91,9 @@ func main() {
 
 ## Flashing New Code
 
-Flashing a Pico installed in a PicoCalc was not made as convenient as it could
-have been.  Some people created some advanced solutions with 3D printing, etc.
-Here I present a simple hack.
+Flashing a Pico installed in a PicoCalc is not convenient as there is no direct
+access to the boot button. Some people created some advanced case mods with 3D
+printing, etc.  Here I present a simple hack.
 
 First, I superglued a SMD button to the Pico and soldered a jumper wire to
 the reset pin, like this:
@@ -101,9 +101,10 @@ the reset pin, like this:
 ![picocalc](img/hacked_pico.jpg)
 
 Now the Pico has a reset button. You can press reset while holding boot to
-go into programming mode.
+go into programming mode. If you don't want to do this mod, you can instead
+do the classic "hold boot while plugging the cable" method.
 
-For the next step, I simply drilled holes in the PicoCalc case where the buttons
+For the next step, I simply drilled holes in the PicoCalc case the button(s)
 are.
 
 ![picocalc](img/hacked_picocalc.jpg)
@@ -124,22 +125,24 @@ batteries - this can overcharge these batteries and is best avoided.
 ## Serial Communications
 
 As said above, you have to use the micro USB to program the PI Pico but should
-not use it as a serial console, due to the 5V charging hardware issue.  The
-work-around is to compile like this:
+not use it while the PicoCalc is powered on, due to the 5V charging hardware
+issue.  When you compile with `-serial=uart`:
 
     tinygo flash -target=pico -serial=uart
 
-Now you can use the USB-C port for serial communications.  This link shows
-the basics of how.  Note that the Pico Hardware tries to change
-the 18650 batteries when you use this port so the current draw can be high.
-Running with no batteries is probably the safest option.
+The USB-C port is now selected for serial communications.
 
-## Debugging
+Note that the PicoCalc hardware tries to change the 18650 batteries when you
+use the USB-C port. It will not overcharge them but can still pull a fair
+amount of current. Running with the USB-C port and no batteries will avoid
+charging the PicoCalc.
 
-If your go code panics (illegal array access, out of memory), it will dump the
-panic address over the UART. Once you get the address, you may wonder what to do
-with it. The answer is to dissasemble the firmware so you can see what the
-address to pointing to. The steps are:
+## Troubleshooting / Debugging
+
+If your uploaded go code panics (illegal array access, out of memory), it will
+dump the panic address over the UART. Once you get the address, you may wonder
+what to do with it. The answer is to disassemble the firmware so you can see
+what the address to pointing to. The steps are:
 
     # replace target with pico2 if needed
     tinygo build -target=pico
@@ -155,8 +158,8 @@ instructions are [here](https://tinygo.org/docs/guides/debugging/).
 
 ## Cross compilation
 
-I have a bigger TinyGo project which is a programmable scientific calculator
-which can run on either PC (compiled with traditional go) or the PicoCalc (using TinyGo):
+I have a bigger TinyGo project which is a programmable scientific calculator.
+It can run on either PC (compiled with traditional go) or the PicoCalc (using TinyGo):
 [RPNGO]()
 
 ![pc calc](img/rpngo_pc.png)
@@ -166,7 +169,9 @@ You can check out the project sources for more in-depth go usage examples.
 The main thing I'll talk about here is Go's use of build tags. The basic
 pattern that you use [go build tags](https://pkg.go.dev/go/build) to define
 files that will compile differently on PC and PicoCalc.  For example,
-say you want to print to the screen or LCD.  You could make a PC version,
+say you want to print to the terminal on PC and the LCD on PicoCalc.
+You could make a PC version,
+
 `printpc.go`:
 
 ```golang
@@ -189,6 +194,12 @@ package console
 func Print(msg string) {
 	// do it the PicoCalc way...
 }
+```
+
+and your code that want to print calls:
+
+```
+	console.Print("hello")
 ```
 
 You can also consider using [go interfaces](https://gobyexample.com/interfaces).

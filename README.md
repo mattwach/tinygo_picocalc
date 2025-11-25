@@ -21,11 +21,15 @@ run programs from an SD card. I'm not to that level with TinyGo and instead use
 the "classic" flash process.  You might want to use a dedicated Pico for these
 experiments to keep your original Pico unchanged.
 
+If you are not familiar with preparing the Pico for flashing code, refer to the
+"More Tips" section below.  The command to upload code is.
+
 ```bash
 tinygo flash -target=pico -serial=uart
 ```
 
-Use `-target=pico2` if you are using a Pico 2.  If it works, you'll see this:
+Use `-target=pico2` here and below if you are using a Pico 2.  If it works,
+you'll see this:
 
 ![picocalc](img/picocalc.jpg) 
 

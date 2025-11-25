@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"tinygo.org/x/tinyfont"
-	"tinygo.org/x/tinyfont/shnm"
+	"tinygo.org/x/tinyfont/freemono"
 )
 
 var (
@@ -16,12 +16,12 @@ var (
 	white = color.RGBA{255, 255, 255, 255}
 )
 
-var font = &shnm.Shnmk12
+var font = &freemono.Regular18pt7b
 var lcd *ili948x.Ili948x
 
 func main() {
 	lcd = ili948x.InitDisplay()
-	tinyfont.WriteLine(lcd, font, 130, 100, "Press Any Key", white)
+	tinyfont.WriteLine(lcd, font, 20, 90, "Press Any Key", white)
 	var keyboard i2ckbd.I2CKbd
 	if err := keyboard.Init(); err != nil {
 		showError(err)
@@ -32,8 +32,8 @@ func main() {
 			showError(err)
 		}
 		if k != 0 {
-			lcd.FillRectangle(140, 140, 40, 40, ili948x.BLACK)
-			tinyfont.DrawChar(lcd, font, 160, 160, rune(k), green)
+			lcd.FillRectangle(120, 120, 60, 60, ili948x.BLACK)
+			tinyfont.DrawChar(lcd, font, 150, 160, rune(k), green)
 		}
 		time.Sleep(20 * time.Millisecond)
 	}

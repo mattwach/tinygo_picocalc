@@ -159,8 +159,8 @@ I have a bigger TinyGo project which is a programmable scientific calculator.
 It can run on either PC (compiled with traditional go) or the PicoCalc (using TinyGo):
 [RPNGO](https://github.com/mattwach/rpngo)
 
-![pc calc](img/rpngo_pc.png)
-![picocalc calc](img/rpngo_picocalc.png)
+![pc calc](img/running_on_pc.png)
+![picocalc calc](img/running_on_picocalc.jpg)
 
 You can check out the project sources for more in-depth go usage examples.
 The main thing I'll talk about here is Go's use of build tags. The basic

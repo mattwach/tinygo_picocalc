@@ -31,7 +31,7 @@ tinygo flash -target=pico -serial=uart
 Use `-target=pico2` here and below if you are using a Pico 2.  If it works,
 you'll see this:
 
-![picocalc](img/picocalc.jpg) 
+![picocalc](img/picocalc_demo.jpg) 
 
 # More Examples
 

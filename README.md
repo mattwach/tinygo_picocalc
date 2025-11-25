@@ -63,10 +63,10 @@ func main() {
 }
 ```
 
-Here is an minimal version that echos PicoCalc keystrokes to the serial
-console.  Compile it with `tinygo flash -target=pico -serial=uart` (or
-`pico2`), then use `tinygo monitor` to view the output (via USB-C).  The
-PicoCalc must be powered on for its keyboard to function.
+Here is an minimal version that echos PicoCalc keystrokes to the serial console.
+Compile it with `tinygo flash -target=pico -serial=uart` (or `pico2`), then use
+`tinygo monitor` to view the output (using the USB-C connection).  The PicoCalc
+must be powered on for its keyboard to function.
 
 ```golang
 package main
@@ -81,13 +81,12 @@ func main() {
 	_ = keyboard.Init()
 	for {
 		k, _ := keyboard.GetChar()
-		if (k >= 32) && (k <= 127) {
+		if (k > 0) && (k <= 127) {
 			print(string(rune(k)))
 		}
 		time.Sleep(20 * time.Millisecond)
 	}
 }
-
 ```
 
 
@@ -123,17 +122,17 @@ Now to program, I do this:
 6. Unplug the micro USB.
 7. You can power the PicoCalc using either 18650 batteries or the USB-C port.
 
-Why no batteries? PicoCalc hardware currently (11/2025) has a flaw where, if
+Why no batteries? PicoCalc hardware currently (11/2025) has a flaw. If
 the PicoCalc is powered on with the micro USB attached, it will feed 5V to the
-18650 batteries- this can overcharge these batteries which you want to avoid
-(Google "18650 overvoltage").
+18650 batteries. This hardware bug can overcharge these batteries which you
+want to avoid (Google "18650 overvoltage").
 
 ## Serial Communications
 
 When using the USB-C port as a serial monitor (via `-serial=uart`), the
-PicoCalc hardware tries to charge any installed 18650 batteries. It will not
+PicoCalc hardware attempts to charge any installed 18650 batteries. It will not
 overcharge them in this case but can still pull a fair amount of current.
-Running with the USB-C port and no batteries will avoid charging the PicoCalc.
+Running with the USB-C port and no batteries will avoid the high current draw.
 
 ## Troubleshooting / Debugging
 
@@ -151,14 +150,14 @@ what the address to pointing to. The steps are:
 Now you can see addresses in the `asm` file and find out what function threw
 the panic.
 
-If you want to try attaching a full debugger (which I have not gotten to yet),
+If you want to try attaching a full debugger (which I have not gotten to trying yet),
 instructions are [here](https://tinygo.org/docs/guides/debugging/).
 
 ## Cross compilation
 
 I have a bigger TinyGo project which is a programmable scientific calculator.
 It can run on either PC (compiled with traditional go) or the PicoCalc (using TinyGo):
-[RPNGO]()
+[RPNGO](https://github.com/mattwach/rpngo)
 
 ![pc calc](img/rpngo_pc.png)
 ![picocalc calc](img/rpngo_picocalc.png)
@@ -200,8 +199,13 @@ and your code that want to print calls:
 	console.Print("hello")
 ```
 
-You can also consider using [go interfaces](https://gobyexample.com/interfaces).
-These are useful if you want to create objects with state and have those
-objects implemented differently on PC vs PicoCalc.
+An alternate method is to use [go interfaces](https://gobyexample.com/interfaces).
+This method involves creating an interface that your callers will use, then
+create implementations of this interface for TinyGo and PC cases. The specific
+object is instantiated in the initialization code which will be different between
+the two cases.
+
+RPNGO uses both interfaces and build tags for different aspects of the project.
+
 
 
